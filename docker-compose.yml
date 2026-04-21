@@ -5,35 +5,34 @@ services:
     environment:
       - MARIADB_ROOT_PASSWORD=CAMBIA_ROOT_DB
       - MARIADB_DATABASE=moodle
-      - MARIADB_USER=bn_moodle
+      - MARIADB_USER=moodle
       - MARIADB_PASSWORD=CAMBIA_DB_PASS
     volumes:
       - moodle_mariadb_data:/bitnami/mariadb
 
   moodle:
-    image: bitnami/moodle:latest
+    image: erseco/alpine-moodle:latest
     restart: unless-stopped
     depends_on:
       - mariadb
     environment:
-      - MOODLE_DATABASE_TYPE=mariadb
-      - MOODLE_DATABASE_HOST=mariadb
-      - MOODLE_DATABASE_PORT_NUMBER=3306
-      - MOODLE_DATABASE_NAME=moodle
-      - MOODLE_DATABASE_USER=bn_moodle
-      - MOODLE_DATABASE_PASSWORD=CAMBIA_DB_PASS
-      - MOODLE_SITE_NAME=Mi Campus
-      - MOODLE_HOST=moodle.tudominio.com
-      - MOODLE_REVERSEPROXY=true
-      - MOODLE_SSLPROXY=true
+      - SITE_URL=https://dawaa3-moodle-ftuk1g-1e0950-212-227-134-220.traefik.me
+      - SSLPROXY=false
+      - DB_TYPE=mariadb
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_NAME=moodle
+      - DB_USER=moodle
+      - DB_PASS=DBPASS
+      - MOODLE_SITENAME=Mi Campus
       - MOODLE_USERNAME=admin
-      - MOODLE_PASSWORD=CAMBIA_ADMIN_PASS
-      - MOODLE_EMAIL=tu-correo@dominio.com
+      - MOODLE_PASSWORD=ADMIN
+      - MOODLE_EMAIL=correo@dominio.com
     volumes:
-      - moodle_app_data:/bitnami/moodle
-      - moodle_files_data:/bitnami/moodledata
+      - moodle_html_data:/var/www/html
+      - moodle_data:/var/www/moodledata
 
 volumes:
   moodle_mariadb_data:
-  moodle_app_data:
-  moodle_files_data:
+  moodle_html_data:
+  moodle_data:
